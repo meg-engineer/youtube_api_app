@@ -15,15 +15,9 @@
               placeholder="キーワード検索"
             />
             <div class="text-center">
-              <a
-                v-on:click="exec"
-                class="btn btn-border-shadow btn-border-shadow--color2"
-                >検索</a
-              >
+              <a v-on:click="exec" class="btn btn-border-shadow btn-border-shadow--color2">検索</a>
               <router-link to="/" class="keyword-search">
-                <a class="btn btn-border-shadow btn-border-shadow--color2"
-                  >戻る</a
-                >
+                <a class="btn btn-border-shadow btn-border-shadow--color2">戻る</a>
               </router-link>
             </div>
           </form>
@@ -31,9 +25,7 @@
       </div>
     </div>
     <div v-if="orderTerm" v-on:click="viewCount">
-      <a class="btn btn-border-shadow btn-border-shadow--color2"
-        >再生回数ランキング</a
-      >
+      <a class="btn btn-border-shadow btn-border-shadow--color2">再生回数ランキング</a>
     </div>
     <div v-if="orderTerm" v-on:click="date">
       <a class="btn btn-border-shadow btn-border-shadow--color2">最新動画</a>
@@ -41,10 +33,7 @@
     <div>
       <div v-for="item in items" v-if="items" v-bind:id="item.id.videoId">
         <div class="item-list">
-          <a
-            v-bind:href="'https://www.youtube.com/watch?v=' + item.id.videoId"
-            target="_blank"
-          >
+          <a v-bind:href="'https://www.youtube.com/watch?v=' + item.id.videoId" target="_blank">
             <img :src="item.snippet.thumbnails.medium.url" />
             {{ item.snippet.title }}
           </a>
@@ -265,6 +254,15 @@ button.btn {
   color: #212529;
   border-radius: 0.5rem;
   margin: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  /* 480px以下に適用されるCSS（スマホ用） */
+  .btn,
+  a.btn,
+  button.btn {
+    font-size: 1rem;
+  }
 }
 
 a.btn-border-shadow {

@@ -6,9 +6,7 @@
           <a class="btn btn-border-shadow btn-border-shadow--color2">音楽</a>
         </div>
         <div class="btn" @click="sports">
-          <a class="btn btn-border-shadow btn-border-shadow--color2"
-            >スポーツ</a
-          >
+          <a class="btn btn-border-shadow btn-border-shadow--color2">スポーツ</a>
         </div>
         <div class="btn" @click="funny">
           <a class="btn btn-border-shadow btn-border-shadow--color2">お笑い</a>
@@ -20,21 +18,21 @@
           <a class="btn btn-border-shadow btn-border-shadow--color2">ゲーム</a>
         </div>
         <div class="btn" @click="news">
-          <a class="btn btn-border-shadow btn-border-shadow--color2"
-            >ニュース</a
-          >
+          <a class="btn btn-border-shadow btn-border-shadow--color2">ニュース</a>
         </div>
-        <div class="btn" @click="covid">
-          <a class="btn btn-border-shadow btn-border-shadow--color2"
-            >コロナ関連</a
-          >
+        <div class="btn covid-pc" @click="covid">
+          <a class="btn btn-border-shadow btn-border-shadow--color2">コロナ関連</a>
+        </div>
+        <div class="btn covid-phone" @click="covid">
+          <a class="btn btn-border-shadow btn-border-shadow--color2 covid-phone">コロナ</a>
         </div>
         <div class="container text-center">
           <router-link to="/searches" class="keyword-search">
-            <div class="btn" @click="music">
-              <a class="btn btn-border-shadow btn-border-shadow--color2"
-                >キーワード検索</a
-              >
+            <div class="btn search-pc" @click="music">
+              <a class="btn btn-border-shadow btn-border-shadow--color2">キーワード検索</a>
+            </div>
+            <div class="btn search-phone" @click="music">
+              <a class="btn btn-border-shadow btn-border-shadow--color2">検索</a>
             </div>
           </router-link>
         </div>
@@ -43,30 +41,17 @@
     <div class="text-center" v-if="keyword">
       <div class="keyword font-weight-bold">{{ keyword }}</div>
       <div class="container">
-        <a
-          class="btn btn-border-shadow btn-border-shadow--color2"
-          @click="viewCount"
-          >再生回数ランキング</a
-        >
-        <a class="btn btn-border-shadow btn-border-shadow--color2" @click="date"
-          >最新動画</a
-        >
+        <a class="btn btn-border-shadow btn-border-shadow--color2" @click="viewCount">再生回数ランキング</a>
+        <a class="btn btn-border-shadow btn-border-shadow--color2" @click="date">最新動画</a>
       </div>
       <div class="container">
-        <a
-          class="btn btn-border-shadow btn-border-shadow--color2"
-          @click="resetKeyword"
-          >戻る</a
-        >
+        <a class="btn btn-border-shadow btn-border-shadow--color2" @click="resetKeyword">戻る</a>
       </div>
     </div>
     <div>
       <div v-for="item in items" v-if="items" v-bind:id="item.id.videoId">
         <div class="item-list">
-          <a
-            v-bind:href="'https://www.youtube.com/watch?v=' + item.id.videoId"
-            target="_blank"
-          >
+          <a v-bind:href="'https://www.youtube.com/watch?v=' + item.id.videoId" target="_blank">
             <img :src="item.snippet.thumbnails.medium.url" />
             {{ item.snippet.title }}
           </a>
@@ -316,6 +301,47 @@ button.btn {
   color: #212529;
   border-radius: 0.5rem;
   margin: 10px;
+}
+
+.covid-pc {
+  display: block;
+}
+
+.covid-phone {
+  display: none;
+}
+
+.search-pc {
+  display: block;
+}
+
+.search-phone {
+  display: none;
+}
+
+@media screen and (max-width: 480px) {
+  /* 480px以下に適用されるCSS（スマホ用） */
+  .btn,
+  a.btn,
+  button.btn {
+    font-size: 1rem;
+  }
+
+  .covid-pc {
+    display: none;
+  }
+
+  .covid-phone {
+    display: block;
+  }
+
+  .search-pc {
+    display: none;
+  }
+
+  .search-phone {
+    display: block;
+  }
 }
 
 a.btn-border-shadow {
