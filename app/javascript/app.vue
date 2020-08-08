@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div id="app">
     <navbar></navbar>
     <router-view></router-view>
+    <p class="footer">© 2020 cocoa-engineer</p>
   </div>
 </template>
 
@@ -39,4 +40,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.footer {
+  text-align: center;
+}
+
+#app {
+  text-align: center;
+  font-family: "Nico Moji";
+}
+</style>

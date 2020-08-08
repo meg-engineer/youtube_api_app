@@ -1,9 +1,7 @@
 <template>
   <div>
     <div v-if="errors.length" class="error-box">
-      <ul>
-        <li v-for="error in errors" class="errors-list">{{ error }}</li>
-      </ul>
+      <span v-for="error in errors" class="errors-list">{{ error }}</span>
     </div>
     <div>
       <div class="row justify-content-center">
@@ -71,7 +69,7 @@ export default {
           for (let i = 0; i < alert.length; i++) {
             alert[i].style.display = "none";
           }
-        }, 5000);
+        }, 2000);
         return;
       }
 
@@ -89,14 +87,12 @@ export default {
               for (let i = 0; i < alert.length; i++) {
                 alert[i].style.display = "block";
               }
-              this.errors.push(
-                "指定されたキーワードに関する動画が存在しません"
-              );
+              this.errors.push("キーワードに関する動画が存在しません");
               setTimeout(function() {
                 for (let i = 0; i < alert.length; i++) {
                   alert[i].style.display = "none";
                 }
-              }, 10000);
+              }, 2000);
             }
             for (let i = 0; i < response.data.length; i++) {
               this.items.push(response.data[i]);
@@ -123,14 +119,12 @@ export default {
               for (let i = 0; i < alert.length; i++) {
                 alert[i].style.display = "block";
               }
-              this.errors.push(
-                "指定されたキーワードに関する動画が存在しません"
-              );
+              this.errors.push("キーワードに関する動画が存在しません");
               setTimeout(function() {
                 for (let i = 0; i < alert.length; i++) {
                   alert[i].style.display = "none";
                 }
-              }, 10000);
+              }, 2000);
             }
             for (let i = 0; i < response.data.length; i++) {
               this.items.push(response.data[i]);
@@ -156,14 +150,12 @@ export default {
               for (let i = 0; i < alert.length; i++) {
                 alert[i].style.display = "block";
               }
-              this.errors.push(
-                "指定されたキーワードに関する動画が存在しません"
-              );
+              this.errors.push("キーワードに関する動画が存在しません");
               setTimeout(function() {
                 for (let i = 0; i < alert.length; i++) {
                   alert[i].style.display = "none";
                 }
-              }, 10000);
+              }, 2000);
             }
             for (let i = 0; i < response.data.length; i++) {
               this.items.push(response.data[i]);
@@ -189,20 +181,15 @@ export default {
 }
 
 .errors-list {
-  list-style: none;
+  animation: fadeOut 2s;
+  animation-fill-mode: both;
 }
 
 .error-box {
-  position: absolute;
-  top: 80px;
-  left: 37%;
+  text-align: center;
+  margin-top: 40px;
   color: red;
   font-size: 1.2rem;
-}
-
-.errors-list {
-  animation: fadeOut 3s;
-  animation-fill-mode: both;
 }
 
 @keyframes fadeOut {
@@ -256,15 +243,6 @@ button.btn {
   margin: 10px;
 }
 
-@media screen and (max-width: 480px) {
-  /* 480px以下に適用されるCSS（スマホ用） */
-  .btn,
-  a.btn,
-  button.btn {
-    font-size: 1rem;
-  }
-}
-
 a.btn-border-shadow {
   padding: calc(1.5rem - 12px) 3rem 1.5rem;
 
@@ -309,5 +287,18 @@ a.btn-border-shadow--color2:before {
 .keyword-search {
   text-decoration: none;
   color: #888888;
+}
+
+@media screen and (max-width: 480px) {
+  /* 480px以下に適用されるCSS（スマホ用） */
+  .btn,
+  a.btn,
+  button.btn {
+    font-size: 1rem;
+  }
+
+  .error-box {
+    font-size: 1rem;
+  }
 }
 </style>

@@ -1,18 +1,26 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2
+  aws-ecr: circleci/aws-ecr@6.6.0
+  aws-ecs: circleci/aws-ecs@1.0.4
+  aws-cli: circleci/aws-cli@0.1.19
 
 jobs:
   build:
     docker:
       - image: circleci/ruby:2.6.5-stretch-node
         environment:
-          RAILS_ENV: "test"
-          PGHOST: "127.0.0.1"
+          RAILS_ENV: "${RAILS_ENV}"
+          PGHOST: "${PGHOST}"
+          POSTGRES_DB: "${POSTGRES_DB}"
+          POSTGRES_USER: "${POSTGRES_USER}"
+          POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       - image: circleci/postgres:11.7
         environment:
-          POSTGRES_USER: "postgres"
-          POSTGRES_PASSWORD: "postgres"
+          PGHOST: "${PGHOST}"
+          POSTGRES_DB: "${POSTGRES_DB}"
+          POSTGRES_USER: "${POSTGRES_DB}"
+          POSTGRES_PASSWORD: "${POSTGRES_DB}"
 
     working_directory: ~/myapp
 
@@ -62,3 +70,39 @@ jobs:
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+
+      - run:
+          name: "db create"
+          command: |
+            aws ecs run-task --region $AWS_REGION 
+              --cluster 'youtube'
+              --task-definition 'youtube'
+              --overrides { "containerOverrides": [ { "name": "youtube_api_app_web", "command": ["rails", "db:create"] } ] }
+      - run:
+          name: "db migrate"
+          command: |
+            aws ecs run-task --region $AWS_REGION 
+              --cluster 'youtube' 
+              --task-definition 'youtube'
+              --overrides { "containerOverrides": [ { "name": "youtube_api_app_web", "command": ["rails", "db:migrate"] } ] }
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: "youtube_api_app_web"
+          tag: "${CIRCLE_SHA1}"
+          extra-build-args: "--build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY} --build-arg RAILS_ENV=${RAILS_ENV}"
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          family: "youtube"
+          cluster-name: "${ECS_ARN}"
+          service-name: "youtube"
+          container-image-name-updates: "container=youtube_api_app_web,tag=${CIRCLE_SHA1}"

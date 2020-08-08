@@ -106,6 +106,7 @@ export default {
     },
     resetKeyword() {
       this.keyword = "";
+      this.items = [];
     },
     // デフォルト検索
     relevance(payload) {
@@ -128,7 +129,7 @@ export default {
                 for (let i = 0; i < alert.length; i++) {
                   alert[i].style.display = "none";
                 }
-              }, 10000);
+              }, 2000);
             }
             for (let i = 0; i < response.data.length; i++) {
               this.items.push(response.data[i]);
@@ -160,7 +161,7 @@ export default {
                 for (let i = 0; i < alert.length; i++) {
                   alert[i].style.display = "none";
                 }
-              }, 10000);
+              }, 2000);
             }
             for (let i = 0; i < response.data.length; i++) {
               this.items.push(response.data[i]);
@@ -192,7 +193,7 @@ export default {
                 for (let i = 0; i < alert.length; i++) {
                   alert[i].style.display = "none";
                 }
-              }, 10000);
+              }, 2000);
             }
             for (let i = 0; i < response.data.length; i++) {
               this.items.push(response.data[i]);
@@ -213,20 +214,15 @@ export default {
 }
 
 .errors-list {
-  list-style: none;
+  animation: fadeOut 2s;
+  animation-fill-mode: both;
 }
 
 .error-box {
-  position: absolute;
-  top: 80px;
-  left: 37%;
+  text-align: center;
+  margin-top: 40px;
   color: red;
   font-size: 1.2rem;
-}
-
-.errors-list {
-  animation: fadeOut 3s;
-  animation-fill-mode: both;
 }
 
 @keyframes fadeOut {
@@ -319,31 +315,6 @@ button.btn {
   display: none;
 }
 
-@media screen and (max-width: 480px) {
-  /* 480px以下に適用されるCSS（スマホ用） */
-  .btn,
-  a.btn,
-  button.btn {
-    font-size: 1rem;
-  }
-
-  .covid-pc {
-    display: none;
-  }
-
-  .covid-phone {
-    display: block;
-  }
-
-  .search-pc {
-    display: none;
-  }
-
-  .search-phone {
-    display: block;
-  }
-}
-
 a.btn-border-shadow {
   padding: calc(1.5rem - 12px) 3rem 1.5rem;
 
@@ -383,5 +354,34 @@ a.btn-border-shadow--color2:before {
   border-radius: 100vh;
   -webkit-box-shadow: 3px 3px 0 #78e5e5;
   box-shadow: 3px 3px 0 #78e5e5;
+}
+
+@media screen and (max-width: 480px) {
+  /* 480px以下に適用されるCSS（スマホ用） */
+  .btn,
+  a.btn,
+  button.btn {
+    font-size: 1rem;
+  }
+
+  .covid-pc {
+    display: none;
+  }
+
+  .covid-phone {
+    display: block;
+  }
+
+  .search-pc {
+    display: none;
+  }
+
+  .search-phone {
+    display: block;
+  }
+
+  .error-box {
+    font-size: 1rem;
+  }
 }
 </style>
