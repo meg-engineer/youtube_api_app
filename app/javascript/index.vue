@@ -209,10 +209,6 @@ export default {
 </script>
 
 <style scoped>
-.item-list {
-  margin: 15px;
-}
-
 .errors-list {
   animation: fadeOut 2s;
   animation-fill-mode: both;
@@ -270,10 +266,6 @@ html {
 }
 
 /* 背景用*/
-body {
-  padding: 30px;
-}
-
 .btn,
 a.btn,
 button.btn {

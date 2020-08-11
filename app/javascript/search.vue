@@ -22,11 +22,13 @@
         </div>
       </div>
     </div>
-    <div v-if="orderTerm" v-on:click="viewCount">
-      <a class="btn btn-border-shadow btn-border-shadow--color2">再生回数ランキング</a>
-    </div>
-    <div v-if="orderTerm" v-on:click="date">
-      <a class="btn btn-border-shadow btn-border-shadow--color2">最新動画</a>
+    <div class="text-center" v-if="orderTerm">
+      <div v-on:click="viewCount">
+        <a class="btn btn-border-shadow btn-border-shadow--color2">再生回数ランキング</a>
+      </div>
+      <div v-on:click="date">
+        <a class="btn btn-border-shadow btn-border-shadow--color2">最新動画</a>
+      </div>
     </div>
     <div>
       <div v-for="item in items" v-if="items" v-bind:id="item.id.videoId">

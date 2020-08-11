@@ -8,7 +8,7 @@ test:
   pool: 5
 
 production:
-  database: <%= ENV['POSTGRES_DB'] %>
+  database: myapp_production
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   adapter: postgresql

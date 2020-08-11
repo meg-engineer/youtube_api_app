@@ -12,15 +12,15 @@ jobs:
         environment:
           RAILS_ENV: "${RAILS_ENV}"
           PGHOST: "${PGHOST}"
-          POSTGRES_DB: "${POSTGRES_DB}"
+          POSTGRES_DB: myapp_production
           POSTGRES_USER: "${POSTGRES_USER}"
           POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       - image: circleci/postgres:11.7
         environment:
           PGHOST: "${PGHOST}"
-          POSTGRES_DB: "${POSTGRES_DB}"
-          POSTGRES_USER: "${POSTGRES_DB}"
-          POSTGRES_PASSWORD: "${POSTGRES_DB}"
+          POSTGRES_DB: myapp_production
+          POSTGRES_USER: "${POSTGRES_USER}"
+          POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
 
     working_directory: ~/myapp
 
@@ -45,11 +45,11 @@ jobs:
 
       - run: mv ./config/database.yml.ci ./config/database.yml
 
-      - run:
-          name: Databasesetup
-          command: |
-            bundle exec rake db:create
-            bundle exec rake db:schema:load
+      # - run:
+      #     name: Databasesetup
+      #     command: |
+      #       bundle exec rake db:create
+      #       bundle exec rake db:schema:load
 
       - run:
           name: Run rspec
@@ -79,17 +79,24 @@ jobs:
       - run:
           name: "db create"
           command: |
-            aws ecs run-task --region $AWS_REGION 
+            aws ecs run-task --region $AWS_REGION
               --cluster 'youtube'
               --task-definition 'youtube'
               --overrides { "containerOverrides": [ { "name": "youtube_api_app_web", "command": ["rails", "db:create"] } ] }
       - run:
           name: "db migrate"
           command: |
-            aws ecs run-task --region $AWS_REGION 
-              --cluster 'youtube' 
+            aws ecs run-task --region $AWS_REGION
+              --cluster 'youtube'
               --task-definition 'youtube'
               --overrides { "containerOverrides": [ { "name": "youtube_api_app_web", "command": ["rails", "db:migrate"] } ] }
+      - run:
+          name: "webpack-dev-server"
+          command: |
+            aws ecs run-task --region $AWS_REGION
+              --cluster 'youtube'
+              --task-definition 'youtube'
+              --overrides { "containerOverrides": [ { "name": "youtube_api_app_web", "command": ["./bin/webpack-dev-server", "--host 0.0.0.0", "--port 3035"] } ] }
 
 workflows:
   build-and-deploy:
@@ -103,6 +110,6 @@ workflows:
           requires:
             - aws-ecr/build-and-push-image
           family: "youtube"
-          cluster-name: "${ECS_ARN}"
+          cluster-name: "youtube"
           service-name: "youtube"
           container-image-name-updates: "container=youtube_api_app_web,tag=${CIRCLE_SHA1}"
